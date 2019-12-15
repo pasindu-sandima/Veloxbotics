@@ -42,11 +42,6 @@ void setup() {
   NoInt();
   buzzN(2);
   RedOFF();GreenOFF();BlueOFF();
-
-  
-
-
-  
 }
 
 void loop() {
@@ -84,33 +79,18 @@ void loop() {
 
   while(digitalRead(button2)){
       if(Mode==1){
+        moveServo(Gripper,GripperGrip);
+        while(digitalRead(button1)){}
+        buzzN(2);
+        moveServo(Gripper,GripperNormal);
+        while(digitalRead(button1)){}
+        buzzN(2);
 
-        // while(true){
-        //   blineFollowing();
-        //   if(not(digitalRead(SLF))){
-        //     brake();
-        //     break;
-        //   }
-        // }
-        // moveServo(MainArm,420);
 
-        // Servo.setPWM(MainArm,0,420);
-        while(true){
-          blineFollowing();
-          if(n==8){
-            brake();
-            break;
-          }
-        }
-
-        while(true){
-        getColours();
-
-        }
       }
       else if(Mode==2){
           // Servo.setPWM(ColourArm,0,150);
-          Servo.setPWM(ColourArm,0,450);
+          start();
 
           break;  
       }

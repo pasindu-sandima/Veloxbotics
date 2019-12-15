@@ -33,6 +33,8 @@ void buzzN(uint16_t n);
 
 void colourSetup();
 void getColours();
+void getColourFront();
+
 
 
 

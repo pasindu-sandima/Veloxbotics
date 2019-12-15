@@ -64,7 +64,7 @@ void turnR(){
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
     }
-    while(countleft<1300){
+    while(countleft<1200){
         speed=1600-countleft;
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
@@ -80,10 +80,10 @@ void turnL(){
     countright=0;
     countleft=0;
     Int();
-    digitalWrite(rm1,LOW);
-    digitalWrite(rm2,HIGH);
-    digitalWrite(lm1,HIGH);
-    digitalWrite(lm2,LOW);
+    digitalWrite(rm1,HIGH);
+    digitalWrite(rm2,LOW);
+    digitalWrite(lm1,LOW);
+    digitalWrite(lm2,HIGH);
     uint16_t speed;
     while(countright<400){
         speed=300+countright;
@@ -153,4 +153,17 @@ void TurnRight(){
     rightjunction=false;
     detachInterrupt(digitalPinToInterrupt(18));
     detachInterrupt(digitalPinToInterrupt(19));
+}
+
+void CorrectPosition(){
+    countright=0;
+    countleft=0;
+    Int();
+    countright=0;
+    while (true){
+        if(countright>250){
+            break;
+        }
+    }
+
 }

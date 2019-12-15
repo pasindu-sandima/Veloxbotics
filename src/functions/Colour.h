@@ -112,3 +112,29 @@ void getColours(){
 
 
 }
+
+void getColourFront(){
+    digitalWrite(SC0,LOW);
+    digitalWrite(SC1,LOW);
+    delay(100);
+    tcs.getRawData(&r, &g, &b, &c);
+    colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
+    lux = tcs.calculateLux(r, g, b);
+
+    tcs.getRawData(&r, &g, &b, &c);
+    colorTemp = tcs.calculateColorTemperature_dn40(r, g, b, c);
+    lux = tcs.calculateLux(r, g, b);
+
+    if((r>g)&&(r>b)){
+        ColourOne = 0;
+        RedON();
+    }
+    else if((g>r)&&(g>b)){
+        ColourOne=1;
+        GreenON();
+    }
+    else{
+        ColourOne=2;
+        BlueON();
+    }
+}

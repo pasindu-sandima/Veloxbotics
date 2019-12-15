@@ -3,7 +3,12 @@
 
 Adafruit_PWMServoDriver Servo;
 uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
+#define GripperNormal 150
+#define GripperGrip 290
+#define MainNormal 170
+#define MainDown  390
+#define ColourOpen 170
+#define ColourClose 450
 #define MainArm 13
 #define ColourArm 12
 #define Gripper 7
@@ -105,6 +110,7 @@ unsigned long time=0;
 uint16_t r, g, b, c, colorTemp, lux;
 uint16_t colours[4][3];
 uint16_t Color[4];
+uint16_t ColourOne;
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
 
