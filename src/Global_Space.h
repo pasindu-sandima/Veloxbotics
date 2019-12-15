@@ -24,6 +24,7 @@ uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 volatile uint16_t countleft=0, countright=0;
 int phasecount=0;
 int lspeed=300; int rspeed=300;
+int lspeedF=400;int rspeedF=400;
 
 
 

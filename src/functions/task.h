@@ -103,16 +103,105 @@ void start(){
     moveServo(ColourArm,ColourClose);
     buzzN(2);
     getColours();
+}
 
 
 
+void start2box(){
+    Int();
+    countright=0;
+    rspeed=300;
+    lspeed=rspeed;
+    while(true){
+        blineFollowing();
+        rspeed=300+countright/10;
+        lspeed=rspeed;
+        if(countright>2000){
+            break;
+        }
+    }
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF))){
+            drive(500,500);
+            break;
+        }
+    }
+    correctPos();
+    turnR();
+    moveServo(MainArm,MainDown);
+    int c=0;
+    while(true){
+        blineFollowing();
+        if(n==8){
+            c++;
+            if(c==1){
+                brake();
+                break;
+            }
+        }
+    }
+    getColourFront();
+    buzzN(2);
+    GreenOFF();BlueOFF();RedOFF();
 
-
-
-
-
-
-
-
-
+    drive(-350,-340);
+    while(true){
+        if(not(digitalRead(SRB)&&digitalRead(SRB))){
+            brake();
+            break;
+        }
+    }
+    drive(300,300);
+    Int();
+    countright=0;
+    while (true){
+        RedON();
+        if(countright>250){
+            RedOFF();
+            NoInt();
+            brake();
+            break;
+        }
+    }
+    turnL();
+    buzzN(2);
+    Int();
+    countright=0;
+    rspeed=300;
+    lspeed=rspeed;
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF)&&digitalRead(SLF))){
+            NoInt();
+            break;
+        }
+        if(rspeed<500){
+            rspeed=300+countright/7;
+            rspeed=lspeed;
+        }
+    }
+    drive(500,500);
+    while(true){
+        if(not(digitalRead(SLB)&&digitalRead(SRB))){
+            break;
+        }
+    }
+    rspeed=500;
+    lspeed=rspeed;
+    c=0;
+    while(true){
+        blineFollowing();
+        if(n==8){
+            c++;
+            if(c==1){
+                brake();
+                break;
+            }
+        }
+    }
+    moveServo(ColourArm,ColourClose);
+    buzzN(2);
+    getColours();
+    
 }

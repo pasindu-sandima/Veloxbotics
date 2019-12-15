@@ -39,8 +39,8 @@ void driveForward(){
     digitalWrite(rm2,LOW);
     digitalWrite(lm1,HIGH);
     digitalWrite(lm2,LOW);
-    analogWrite(Lpwm,lspeed);
-    analogWrite(Rpwm,rspeed);
+    analogWrite(Lpwm,lspeedF);
+    analogWrite(Rpwm,rspeedF);
 }
 
 void turnR(){
@@ -135,8 +135,7 @@ void TurnRight(){
     delay(200);//time calculation
     phasecount=0;
     countleft=0;
-    attachInterrupt(digitalPinToInterrupt(18),leftcount,CHANGE); //encoder
-    attachInterrupt(digitalPinToInterrupt(19),leftcount,CHANGE);
+    Int();
     digitalWrite(rm1,LOW);
     digitalWrite(rm2,HIGH);
     digitalWrite(lm1,HIGH);
@@ -151,19 +150,28 @@ void TurnRight(){
     brake();
     leftjunction=false;
     rightjunction=false;
-    detachInterrupt(digitalPinToInterrupt(18));
-    detachInterrupt(digitalPinToInterrupt(19));
+    NoInt();
 }
 
-void CorrectPosition(){
-    countright=0;
-    countleft=0;
+void correctPos(){
     Int();
+    countright=0;
+    while(true){
+        if(not(digitalRead(SRB)==HIGH&&(digitalRead(SLB)==HIGH))){
+            break;
+        }
+        if(rspeed>150){
+            rspeed=500-countright;
+            lspeed=rspeed;
+            drive(lspeed,rspeed);
+        }        
+    }
     countright=0;
     while (true){
         if(countright>250){
             break;
         }
     }
-
+    brake();
+    NoInt();
 }
