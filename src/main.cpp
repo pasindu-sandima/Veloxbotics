@@ -17,6 +17,8 @@
 #include "functions\PushB.h"
 #include "functions\LineMaze.h"
 #include "functions\Sword.h"
+#include "functions\task.h"
+
 
 
 
@@ -37,7 +39,7 @@ void setup() {
   colourSetup();
   printVelox();
   servoInit();
-  // NoInt();
+  NoInt();
   buzzN(2);
   RedOFF();GreenOFF();BlueOFF();
 

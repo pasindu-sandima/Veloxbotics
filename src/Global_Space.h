@@ -2,7 +2,8 @@
 #define GLOBAL_SPACE_H
 
 Adafruit_PWMServoDriver Servo;
-uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,170,0,0};
+uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
 #define MainArm 13
 #define ColourArm 12
 #define Gripper 7

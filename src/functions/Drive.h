@@ -48,7 +48,7 @@ void turnR(){
     buzzN(2);
     countright=0;
     countleft=0;
-    interrupts();
+    Int();
     digitalWrite(rm1,LOW);
     digitalWrite(rm2,HIGH);
     digitalWrite(lm1,HIGH);
@@ -71,7 +71,7 @@ void turnR(){
     }
     brake();
     buzzN(2);
-    noInterrupts();
+    NoInt();
 }
 
 void turnL(){
@@ -79,7 +79,7 @@ void turnL(){
     buzzN(2);
     countright=0;
     countleft=0;
-    interrupts();
+    Int();
     digitalWrite(rm1,LOW);
     digitalWrite(rm2,HIGH);
     digitalWrite(lm1,HIGH);
@@ -102,7 +102,7 @@ void turnL(){
     }
     brake();
     buzzN(2);
-    noInterrupts();
+    NoInt();
 }
 
 void TurnLeft(){
