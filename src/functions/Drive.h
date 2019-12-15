@@ -154,3 +154,7 @@ void TurnRight(){
     detachInterrupt(digitalPinToInterrupt(18));
     detachInterrupt(digitalPinToInterrupt(19));
 }
+
+void turn180();
+
+void countReverse(int count);
