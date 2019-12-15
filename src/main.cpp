@@ -14,6 +14,14 @@
 #include "functions\PinModes.h"
 #include "functions\OLED.h"
 #include "functions\Colour.h"
+#include "functions\PushB.h"
+#include "functions\LineMaze.h"
+#include "functions\Sword.h"
+
+
+
+
+
 
 
 
