@@ -20,14 +20,6 @@
 
 
 
-
-
-
-
-
-
-
-
 void setup() {
   // put your setup code here, to run once:
   TCCR1B &= ~(1<<CS11);//to set 7.5kHz f to pin 11
