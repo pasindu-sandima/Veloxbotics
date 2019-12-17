@@ -47,7 +47,7 @@ void blineFollowing(){
             digitalWrite(lm1, HIGH);
             digitalWrite(lm2,LOW);
             error = sum/n;
-            adj = Kp*error + Kd*(error-last_error);
+            adj = bKp*error + bKd*(error-last_error);
             last_error = error;
             if (adj>0) {      
                   Lspeed += adj/w6;
@@ -161,6 +161,7 @@ void wlineFollowing(){
             analogWrite(Lpwm, Lspeed);
       }
       else{
+            // drive(300,300);
             brake();
       }
 }
@@ -250,7 +251,7 @@ void reverselineFollowing(){
 }
 void dashedlineFollowing(){
       n=0,sum=0,Rspeed=rspeed,Lspeed=lspeed;
-
+      
       if (analogRead(S1)>br) {
             n++;
             sum-=w4;
@@ -313,6 +314,12 @@ void dashedlineFollowing(){
             if (Lspeed>900){
                   Lspeed = 900;
             }
+            if (dash_count<100){
+                  l_pwm[dash_count]=Lspeed;
+                  r_pwm[dash_count]=Rspeed;
+                  dash_count++;
+            }
+            else dash_count=0;
             if (Rspeed<0){
                   digitalWrite(rm2,HIGH);
                   digitalWrite(rm1,LOW);
@@ -325,10 +332,21 @@ void dashedlineFollowing(){
             }
             analogWrite(Rpwm, Rspeed);
             analogWrite(Lpwm, Lspeed);
+            l_average=0;
+            r_average=0;
+
       }
       else{
-            driveForward();
-            // brake();
+            if(l_average==0){
+                  for (int i=0;i<50;i++){
+                        l_average+=l_pwm[i];
+                        r_average+=r_pwm[i];
+                  }
+                  Lspeed=l_average/50;
+                  Rspeed=r_average/50;
+            }
+            
+            drive(Lspeed,Rspeed);
       }
 
 }

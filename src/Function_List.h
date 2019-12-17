@@ -22,6 +22,12 @@ void turnR();
 void turnL();
 void turnRight();
 void turnLeft();
+void turn180();
+
+
+
+
+void Maze_Optimize();
 
 
 void OLEDsetup();

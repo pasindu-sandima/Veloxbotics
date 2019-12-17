@@ -112,24 +112,30 @@ void start2box(){
     countright=0;
     rspeed=300;
     lspeed=rspeed;
+    RedON();
     while(true){
         blineFollowing();
-        rspeed=300+countright/10;
+        rspeed=300+countright/24;
         lspeed=rspeed;
-        if(countright>2000){
+        if(countright>1200){
             break;
         }
     }
+    BlueON();RedOFF();
     while(true){
         blineFollowing();
-        if(not(digitalRead(SRF))){
+        if(not(digitalRead(SRF)&&digitalRead(SRB))){
             drive(500,500);
             break;
         }
     }
+    GreenON();BlueOFF();
     correctPos();
+    GreenOFF();
     turnR();
     moveServo(MainArm,MainDown);
+    rspeed=300;
+    lspeed=rspeed;
     int c=0;
     while(true){
         blineFollowing();
@@ -177,8 +183,8 @@ void start2box(){
             break;
         }
         if(rspeed<500){
-            rspeed=300+countright/7;
-            rspeed=lspeed;
+            rspeed=300+countright/4;
+            lspeed=rspeed;
         }
     }
     drive(500,500);
@@ -203,5 +209,103 @@ void start2box(){
     moveServo(ColourArm,ColourClose);
     buzzN(2);
     getColours();
+    moveServo(ColourArm,ColourOpen);
+    moveServo(MainArm,MainNormal);
+    moveServo(ColourArm,ColourClose);
+    turn180();
+}
+
+void box2indication(){
+    rspeed=400;
+    lspeed=400;
+    countright=0;
+    Int();
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF)&&digitalRead(SLF))){
+            NoInt();
+            break;
+        }
+        if(rspeed<500){
+            rspeed=300+countright/5;
+            rspeed=lspeed;
+        }
+    }
+    correctPos();
+    turnR();
+    drive(-350,-340);
+    countright=0;
+    Int();
+    while(true){
+        if(countright>1000){
+            break;
+        }
+    }
+    while(true){
+        if(not(digitalRead(SRB)&&digitalRead(SLB))){
+            break;
+        }
+    }
+    countright=0;
+    while(true){
+        if(countright>200){
+            NoInt();
+            break;
+        }
+    }
+    brake();
+    if(ColourOne==0) {RedON();}
+    else if(ColourOne==1) {GreenON();}
+    else{BlueON();}
+    for(int i=0;i<4;i++){
+        if(Color[i]==ColourOne){
+            ColourSum++;
+        }
+    }
+    OLEDdisplay(String(ColourSum));
+    while(digitalRead(button1)){}
+    buzzN(2);
+}
+
+void indi2dash(){
     
+    rspeed=300;
+    lspeed=300;
+    countright=0;
+    Int();
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF)&&digitalRead(SLF))){
+            break;
+        }
+        if(rspeed<500){
+            rspeed=300+countright/5;
+            lspeed=rspeed;
+        }
+    }
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRB)&&digitalRead(SLB))){
+            NoInt();
+            break;
+        }
+        if(rspeed<500){
+            rspeed=300+countright/5;
+            lspeed=rspeed;
+        }
+    }
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF)&&digitalRead(SLF))){
+            break;
+        }
+    }
+    drive(500,500);
+    while(true){
+        if(not(digitalRead(SRB)&&digitalRead(SLB))){
+            break;
+        }
+    }
+    correctPos();
+    turnR();
 }

@@ -76,43 +76,61 @@ void loop() {
   buzzN(5);
 
 
-
+  linecount=0;
   while(digitalRead(button2)){
+    
       if(Mode==1){
-        moveServo(Gripper,GripperGrip);
-        while(digitalRead(button1)){}
-        buzzN(2);
-        moveServo(Gripper,GripperNormal);
-        while(digitalRead(button1)){}
-        buzzN(2);
-
-
-      }
-      else if(Mode==2){
-          // Servo.setPWM(ColourArm,0,150);
-          start();
-
-          break;  
-      }
-      else if(Mode==3){
-          // Servo.setPWM(ColourArm,0,300);
-          // Servo.setPWM(Gripper,0,120);
-          Servo.setPWM(MainArm,0,430);
-
-          break;
-      }
-      else if(Mode==4){
-          dashedlineFollowing();
-          if(n==8){
+        drive(800,800);
+        countright=0;
+        Int();
+        while(true){
+          if(countright>5000){
             brake();
             break;
           }
+        }
+        break;
+      }
+      else if(Mode==2){
+        box2indication();
+        break; 
+      }
+      else if(Mode==3){
+        indi2dash();
+        break;
+      }
+      else if(Mode==4){
+          mazeTraverse();
+          turn180();
+          while(digitalRead(button1)){}
+          buzzN(2);
+          shortPath();
+          brake();
+          while(digitalRead(button1)){}
+          buzzN(2);
       }
       else if(Mode==5){
-          wlineFollowing();
-          if(n==0){
-            break;
+          moveServo(Gripper,GripperGrip);
+          delay(1000);
+          if(detectSword()){
+            moveServo(MainArm,MainNormal);
+            delay(1000);
           }
+          else{
+            moveServo(Gripper,GripperNormal);
+          }
+          releaseSword();
+          break;
+          // moveServo(Gripper,GripperNormal);
+          // delay(1000);
+          // moveServo(ColourArm,ColourClose);
+          // delay(1000);
+          // moveServo(ColourArm,ColourOpen);-
+          // delay(1000);
+          // moveServo(MainArm,MainDown);
+          // delay(1000);
+          
+
       }
       else if(Mode==6){
           Serial.print(analogRead(S1));

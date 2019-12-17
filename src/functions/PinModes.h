@@ -44,6 +44,9 @@ void pinModes(){
     pinMode(SC3,OUTPUT);
     pinMode(sensorOut,INPUT);
 
+    pinMode(metalDetect,INPUT);
+
+
 
     //buttons
     pinMode(button1,INPUT_PULLUP);
