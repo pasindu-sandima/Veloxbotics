@@ -64,7 +64,6 @@ void Maze_Optimize(){
     }
 }
 
-
 void detectjunction(){
   //sensor readings
   if (digitalRead(SLF)||digitalRead(SRF)){
@@ -120,6 +119,8 @@ void junctiontype(){
   }
 }
 void maze_solve(){
+    rspeed=300;
+    lspeed=300;
     while(true){
         wlineFollowing();
         detectjunction();
@@ -137,7 +138,7 @@ void maze_solve(){
             Ltemp=true;
         }
         RedON();
-        drive(400,400);
+        drive(300,300);
         while(true){
             if(digitalRead(SRF)){
                 Rtemp=true;
@@ -150,7 +151,7 @@ void maze_solve(){
                 Int();
                 countright=0;
                 while(true){
-                    if(countright>250){
+                    if(countright>410){
                         brake();
                         break;
                     }
@@ -168,39 +169,47 @@ void maze_solve(){
     
     // junctiontype();
     // delay(2000);
-    RedOFF();
-    OLEDdisplay(String(temp));
-    if (temp==0){
-        turnL();
-        stackpoint+=1;
-        stackval=L;
-        junctions[stackpoint]=stackval;
+    if(digitalRead(SRF)&&digitalRead(SLF)&&digitalRead(SRB)&&digitalRead(SLB)){
+        MazeEnd=true;
     }
-    else if (temp==1)
-    {
-        stackpoint+=1;
-        stackval=S;
-        junctions[stackpoint]=stackval;
+    else{
+        RedOFF();
+        OLEDdisplay(String(temp));
+        if (temp==0){
+            turnL();
+            stackpoint+=1;
+            stackval=L;
+            junctions[stackpoint]=stackval;
+        }
+        else if (temp==1)
+        {
+            stackpoint+=1;
+            stackval=S;
+            junctions[stackpoint]=stackval;
+        }
+        else if (temp==2)
+        {
+            turnR();
+            stackpoint+=1;
+            stackval=R;
+            junctions[stackpoint]=stackval;
+        }
+        else if(temp==3){
+            turn180();
+            stackpoint+=1;
+            stackval=B;
+            junctions[stackpoint]=stackval;
+        }
     }
-    else if (temp==2)
-    {
-        turnR();
-        stackpoint+=1;
-        stackval=R;
-        junctions[stackpoint]=stackval;
-    }
-    else if(temp==3){
-        turn180();
-        stackpoint+=1;
-        stackval=B;
-        junctions[stackpoint]=stackval;
-    }
+
 }
 void maze_exit(){
     //to exit the maze
 }
 
 void shortPath(){
+    Maze_Optimize();
+    buzzN(2);
     stackpoint=Len;
     while(true){
         while(true){
@@ -215,23 +224,40 @@ void shortPath(){
             break;
         }  
         if(digitalRead(SRF)||digitalRead(SLF)){
-            drive(500,500);
+            // buzzN(3);
+            // delay(500);
+            drive(300,300);
             while(true){
                 if (digitalRead(SRB) || digitalRead(SLB))
                 {
-                    brake();
+                    Int();
+                    countright=0;
+                    while(true){
+                        if(countright>410){
+                            brake();
+                            break;
+                        }
+                    }
                     break;
                 }   
             }
         }
         if(junctions[stackpoint]==S){
             stackpoint--;
+            buzzN(2);
+            // delay(500);
+
         }
         else if(junctions[stackpoint]==R){
             turnL();
             stackpoint--;
+            // buzzN(5);
+            // delay(500);
+            
         }
         else{
+            // buzzN(6);
+            // delay(500);
             turnR();
             stackpoint--;
         }
@@ -244,12 +270,11 @@ void mazeTraverse(){
     while(true){
         stackcount++;
         maze_solve();
-        if(stackcount>7){
+        if(MazeEnd){
             brake();
             break;
         }
     }
-    OLEDdisplay(String(junctions[0])+", "+String(junctions[1])+", "+String(junctions[2])+", "+String(junctions[3])+", "+String(junctions[4])+", "+String(junctions[5])+", "+String(junctions[5]));
-    while(digitalRead(button1)){}
+    OLEDdisplay(String(junctions[0])+", "+String(junctions[1])+", "+String(junctions[2])+", "+String(junctions[3])+", "+String(junctions[4])+", "+String(junctions[5])+", "+String(junctions[6])+", "+String(junctions[7])+", "+String(junctions[8])+", "+String(junctions[9]));
     buzzN(2);
 }

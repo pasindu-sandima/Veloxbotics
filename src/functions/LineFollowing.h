@@ -250,8 +250,7 @@ void reverselineFollowing(){
       }
 }
 void dashedlineFollowing(){
-      n=0,sum=0,Rspeed=rspeed,Lspeed=lspeed;
-      
+      n=0,sum=0;      
       if (analogRead(S1)>br) {
             n++;
             sum-=w4;
@@ -293,6 +292,7 @@ void dashedlineFollowing(){
             sum+=w1;            
       }
       if(n!=0){
+            Rspeed=rspeed,Lspeed=lspeed;
             digitalWrite(rm1, HIGH);
             digitalWrite(rm2,LOW);
             digitalWrite(lm1, HIGH);
@@ -308,32 +308,32 @@ void dashedlineFollowing(){
                   Rspeed -= adj/w6;
                   Lspeed += adj/w5;
             }
-            if (Rspeed>900){
-                  Rspeed = 900;
+            if (Rspeed>550){
+                  Rspeed = 550;
             }
-            if (Lspeed>900){
-                  Lspeed = 900;
+            if (Lspeed>550){
+                  Lspeed = 550;
             }
-            if (dash_count<100){
+            
+            if (Rspeed<150){
+                  Rspeed = 150;
+            }
+            if (Lspeed<150){
+                  Lspeed = 150;
+            }
+            if (dash_count<50){
                   l_pwm[dash_count]=Lspeed;
                   r_pwm[dash_count]=Rspeed;
                   dash_count++;
             }
             else dash_count=0;
-            if (Rspeed<0){
-                  digitalWrite(rm2,HIGH);
-                  digitalWrite(rm1,LOW);
-                  Rspeed = - Rspeed;
-            }
-            if (Lspeed<0){
-                  digitalWrite(lm2,HIGH);
-                  digitalWrite(lm1,LOW);
-                  Lspeed = - Lspeed;
-            }
             analogWrite(Rpwm, Rspeed);
             analogWrite(Lpwm, Lspeed);
             l_average=0;
             r_average=0;
+            Serial.print(Rspeed);
+            Serial.print(", ");
+            Serial.println(Lspeed);
 
       }
       else{
@@ -347,6 +347,7 @@ void dashedlineFollowing(){
             }
             
             drive(Lspeed,Rspeed);
+            // delay(5);
       }
 
 }

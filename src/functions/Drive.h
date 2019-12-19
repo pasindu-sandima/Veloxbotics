@@ -105,6 +105,28 @@ void turnL(){
     NoInt();
 }
 
+void turnLpushB(){
+    brake();
+    buzzN(2);
+    countright=0;
+    countleft=0;
+    Int();
+    digitalWrite(rm1,HIGH);
+    digitalWrite(rm2,LOW);
+    digitalWrite(lm1,LOW);
+    digitalWrite(lm2,HIGH);
+    analogWrite(Lpwm,400);
+    analogWrite(Rpwm,400);
+    while(true){
+        if((analogRead(S3)>br)&&(analogRead(S4>br))){
+            brake();
+            break;
+        }
+    }
+    buzzN(2);
+    NoInt();
+}
+
 void turn180(){
     brake();
     delay(200);
@@ -191,6 +213,31 @@ void correctPos(){
     countright=0;
     while (true){
         if(countright>200){
+            break;
+        }
+    }
+    brake();
+    NoInt();
+}
+
+void correctPos2(){
+    rspeed=300;
+    lspeed=300;
+    Int();
+    countright=0;
+    while(true){
+        if(not(digitalRead(SRB)==HIGH&&(digitalRead(SLB)==HIGH))){
+            break;
+        }
+        if(rspeed>150){
+            rspeed=300-countright;
+            lspeed=rspeed;
+            drive(lspeed,rspeed);
+        }        
+    }
+    countright=0;
+    while (true){
+        if(countright>300){
             break;
         }
     }

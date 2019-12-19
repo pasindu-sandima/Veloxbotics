@@ -3,6 +3,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_TCS34725.h>
+#include <MPU6050_tockn.h>
 #include <Wire.h>
 
 #include "Global_Space.h"
@@ -18,6 +19,8 @@
 #include "functions\LineMaze.h"
 #include "functions\Sword.h"
 #include "functions\task.h"
+#include "functions\Gyro.h"
+
 
 
 
@@ -32,7 +35,7 @@ void setup() {
   RedON();
   GreenON();
   BlueON();
-  Serial.begin(9600);
+  Serial.begin(250000);
   Wire.begin();
   Serial2.begin(115200);
   OLEDsetup();
@@ -80,15 +83,7 @@ void loop() {
   while(digitalRead(button2)){
     
       if(Mode==1){
-        drive(800,800);
-        countright=0;
-        Int();
-        while(true){
-          if(countright>5000){
-            brake();
-            break;
-          }
-        }
+        start2box();
         break;
       }
       else if(Mode==2){
@@ -97,39 +92,28 @@ void loop() {
       }
       else if(Mode==3){
         indi2dash();
+        // pushButton();
         break;
       }
       else if(Mode==4){
           mazeTraverse();
-          turn180();
+          // turn180();
           while(digitalRead(button1)){}
           buzzN(2);
+          Maze_Optimize();
+          OLEDdisplay(String(junctions[0])+", "+String(junctions[1])+", "+String(junctions[2])+", "+String(junctions[3])+", "+String(junctions[4])+", "+String(junctions[5])+", "+String(junctions[6])+", "+String(junctions[7])+", "+String(junctions[8])+", "+String(junctions[9]));
+          buzzN(2);
+          turn180();
+          while(digitalRead(button1)){}
           shortPath();
           brake();
           while(digitalRead(button1)){}
           buzzN(2);
+          break;
       }
       else if(Mode==5){
-          moveServo(Gripper,GripperGrip);
-          delay(1000);
-          if(detectSword()){
-            moveServo(MainArm,MainNormal);
-            delay(1000);
-          }
-          else{
-            moveServo(Gripper,GripperNormal);
-          }
-          releaseSword();
+          maze2sword2();
           break;
-          // moveServo(Gripper,GripperNormal);
-          // delay(1000);
-          // moveServo(ColourArm,ColourClose);
-          // delay(1000);
-          // moveServo(ColourArm,ColourOpen);-
-          // delay(1000);
-          // moveServo(MainArm,MainDown);
-          // delay(1000);
-          
 
       }
       else if(Mode==6){
@@ -150,11 +134,93 @@ void loop() {
           Serial.println(analogRead(S8));
       }
       else if(Mode==7){
-          blineFollowing();
-          if(not(digitalRead(SRF)&&digitalRead(SLF))){
-            brake();
+          dashline();
+          break;
+      }
+      else if(Mode==8){
+          pushButton();
+          break;
+      }
+      else if(Mode==9){
+        ColourSum=2;
+        moveServo(Gripper,GripperGrip);
+
+        rspeed=500;
+    lspeed=500;
+    while(true){
+        blineFollowing();
+        if(not(digitalRead(SRF))){
             break;
-          }
+        }
+    }
+    drive(500,500);
+    while(true){
+        if(not(digitalRead(SRB))){
+            break;
+        }
+    }
+    correctPos();
+    
+    if(ColourSum==2){
+        turnR();
+        rspeed=500;
+        lspeed=500;
+        while(true){
+            blineFollowing();
+            if(not(digitalRead(SLF))){
+                break;
+            }
+        }
+        drive(500,500);
+        while(true){
+            if(not(digitalRead(SLB))){
+                break;
+            }
+        }
+        correctPos();
+        turnL();
+        releaseSwordBox();
+    }
+    else if(ColourSum==3){
+        turnR();
+        rspeed=500;
+        lspeed=500;
+        while(true){
+            blineFollowing();
+            if(not(digitalRead(SLF))){
+                break;
+            }
+        }
+        drive(500,500);
+        while(true){
+            if(not(digitalRead(SLB))){
+                break;
+            }
+        }
+        correctPos();
+        rspeed=500;
+        lspeed=500;
+        while(true){
+            blineFollowing();
+            if(not(digitalRead(SLF))){
+                break;
+            }
+        }
+        drive(500,500);
+        while(true){
+            if(not(digitalRead(SLB))){
+                break;
+            }
+        }
+        correctPos();
+        turnL();
+        releaseSwordBox();
+    }
+    else{
+        releaseSwordBox();
+    }
+        break;
+
       }
       else{
           break;

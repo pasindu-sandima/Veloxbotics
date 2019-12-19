@@ -17,7 +17,29 @@ bool detectSword(){
     } 
 }
 void releaseSword(){
-    moveServo(MainArm,MainDown);
+    moveServo(MainArm,MainGrip2);
     delay(1000);
     moveServo(Gripper,GripperNormal);
+}
+
+void grabSword(){
+    moveServo(MainArm,MainGrip);
+    delay(1000);
+    moveServo(Gripper,GripperGrip);
+    delay(1000);
+    moveServo(MainArm,MainNormal);
+
+}
+
+void releaseSwordBox(){
+    rspeed=300;
+    lspeed=300;
+    while(true){
+        blineFollowing();
+        if(n==0){
+            brake();
+            break;
+        }
+    }
+    releaseSword();
 }

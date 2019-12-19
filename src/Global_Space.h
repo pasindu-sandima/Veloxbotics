@@ -7,7 +7,8 @@ uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 #define GripperGrip 300
 #define MainNormal 170
 #define MainDown  390
-#define MainGrip 425
+#define MainGrip 435
+#define MainGrip2 390
 #define ColourOpen 170
 #define ColourClose 450
 #define MainArm 13
@@ -24,7 +25,7 @@ uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 #define Lpwm 11
 volatile uint16_t countleft=0, countright=0;
 int phasecount=0;
-int lspeed=400; int rspeed=400;
+int lspeed=300; int rspeed=300;
 int lspeedF=400;int rspeedF=400;
 
 
@@ -68,6 +69,7 @@ int maze_state=0;
 int junctions[30];
 int stackpoint=-1;
 int stackval=0;
+bool MazeEnd = false;
 int Len;
 int shiftstack=0;
 int is_junction = 0; //checks whether a junction is present gets high when one juction sensor is on 
@@ -103,7 +105,7 @@ int Kd=115, Kp=15,w1=1, w2=3, w3=8, w4=20, W5=4,w5=2,w6=1; // w5 = error is devi
 int bKd=40,bKp=15;
 int wr = 75,br=100;
 int Rspeed; int Lspeed;
-int dKd=115, dKp=30;
+int dKd=100, dKp=50;
 int linecount=0;
 int l_pwm[50];
 int r_pwm[50];
@@ -142,5 +144,9 @@ uint16_t ColourOne;
 uint16_t ColourSum=0;
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
+
+MPU6050 mpu6050(Wire);
+
+int GyroZ;
 
 #endif
