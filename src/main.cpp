@@ -7,7 +7,7 @@
 
 #include "Global_Space.h"
 #include "Function_List.h"
-
+  
 #include "functions\Servos.h"
 #include "functions\LineFollowing.h"
 #include "functions\Drive.h"
@@ -157,6 +157,20 @@ void loop() {
             brake();
             break;
           }
+      }
+      else if(Mode==8){
+        while(true){
+          turn180();
+          delay(1000);
+          if(digitalRead(button2)){
+            break;
+          }
+        }
+          
+      }
+      else if(Mode==9){
+        countReverse(10000);
+        break;
       }
       else{
           break;

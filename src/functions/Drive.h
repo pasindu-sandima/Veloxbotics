@@ -155,6 +155,35 @@ void TurnRight(){
     detachInterrupt(digitalPinToInterrupt(19));
 }
 
-void turn180();
+void turn180(){
+    phasecount=0;
+    countright=0;
+    attachInterrupt(digitalPinToInterrupt(3),rightcount,CHANGE); //encoder
+    digitalWrite(rm1,HIGH);
+    digitalWrite(rm2,LOW);
+    digitalWrite(lm1,LOW);
+    digitalWrite(lm2,HIGH);
+    analogWrite(Rpwm,390);
+    analogWrite(Lpwm,400);
+    while(phasecount<29){
+        countright=0;
+        while(countright<49){}
+        phasecount++;
+    }  
+    brake();
+    leftjunction=false;
+    rightjunction=false;
+    detachInterrupt(digitalPinToInterrupt(3));
+}
 
-void countReverse(int count);
+void countReverse(int count){
+    countright=0;
+    Int();
+    drive(-400,-390);
+
+    while(true){
+        if(countright>count) break; 
+    }
+    brake();
+    NoInt();
+}

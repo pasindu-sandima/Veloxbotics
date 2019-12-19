@@ -12,4 +12,6 @@ void pushButton(){
     turn180();
     countReverse(2000);
     blineFollowing();
+    delay(3000);
+    brake();
 }
