@@ -79,25 +79,23 @@ void detectjunction(){
 void detectFront(){
     n=0;
     if (analogRead(S4)<wr) {
-            n++;
-            lineout=0;            
-            sum-=w1;            
+            n++;           
       }
     if (analogRead(S3)<wr) {
-            n++;
-            lineout=0;            
-            sum-=w1;            
+            n++;          
     }
     if (analogRead(S6)<wr) {
-            n++;
-            lineout=0;            
-            sum-=w1;            
+            n++;          
     }
 
     if (analogRead(S5)<wr) {
-            n++;
-            lineout=0;            
-            sum+=w1;            
+            n++;      
+    }
+    if (analogRead(S7)<wr) {
+            n++;         
+    }
+    if (analogRead(S2)<wr) {
+            n++;       
     }
     
 }
@@ -108,7 +106,7 @@ void junctiontype(){
   if (Ltemp){
       temp=0;
   }
-  else if (n>2){
+  else if (n>1){
       temp=1;
   }
   else if (Rtemp){
@@ -266,6 +264,8 @@ void shortPath(){
 }
 
 void mazeTraverse(){
+    rspeed=300;
+    lspeed=300;
     int stackcount=0;
     while(true){
         stackcount++;

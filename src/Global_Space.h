@@ -105,7 +105,7 @@ int Kd=115, Kp=15,w1=1, w2=3, w3=8, w4=20, W5=4,w5=2,w6=1; // w5 = error is devi
 int bKd=40,bKp=15;
 int wr = 75,br=100;
 int Rspeed; int Lspeed;
-int dKd=100, dKp=50;
+int dKd=100, dKp=55;
 int linecount=0;
 int l_pwm[50];
 int r_pwm[50];

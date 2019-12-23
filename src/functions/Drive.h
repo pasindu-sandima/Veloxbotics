@@ -64,7 +64,7 @@ void turnR(){
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
     }
-    while(countleft<1130){
+    while(countleft<1020){
         speed=1600-countleft;
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
@@ -95,7 +95,7 @@ void turnL(){
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
     }
-    while(countright<1150){
+    while(countright<1050){
         speed=1600-countright;
         analogWrite(Lpwm,speed);
         analogWrite(Rpwm,speed);
@@ -127,6 +127,28 @@ void turnLpushB(){
     NoInt();
 }
 
+void turnRpushB(){
+    brake();
+    buzzN(2);
+    countright=0;
+    countleft=0;
+    Int();
+    digitalWrite(rm1,LOW);
+    digitalWrite(rm2,HIGH);
+    digitalWrite(lm1,HIGH);
+    digitalWrite(lm2,LOW);
+    analogWrite(Lpwm,400);
+    analogWrite(Rpwm,400);
+    while(true){
+        if((analogRead(S3)>br)&&(analogRead(S4>br))){
+            brake();
+            break;
+        }
+    }
+    buzzN(2);
+    NoInt();
+}
+
 void turn180(){
     brake();
     delay(200);
@@ -137,9 +159,9 @@ void turn180(){
     digitalWrite(rm2,LOW);
     digitalWrite(lm1,LOW);
     digitalWrite(lm2,HIGH);
-    analogWrite(Rpwm,505);
-    analogWrite(Lpwm,505);
-    while(phasecount<57){
+    analogWrite(Rpwm,350);
+    analogWrite(Lpwm,450);
+    while(phasecount<48){
         countright=0;
         while(countright<49){}
         phasecount++;

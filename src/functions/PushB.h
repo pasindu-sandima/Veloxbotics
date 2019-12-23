@@ -15,8 +15,13 @@ void pushButton(){
     drive(-350,-350);
     Int();
     countright=0;
+    time=millis();
     while(true){
         if(countright>1250){
+            brake();
+            break;
+        }
+        if(millis()>time+2000){
             brake();
             break;
         }

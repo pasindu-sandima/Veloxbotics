@@ -83,15 +83,16 @@ void loop() {
   while(digitalRead(button2)){
     
       if(Mode==1){
-        start2box();
+        roundonetask();
         break;
       }
       else if(Mode==2){
-        box2indication();
-        break; 
+        pushb2maze();
+        break;
+
       }
       else if(Mode==3){
-        indi2dash();
+        maze2releasesword();
         // pushButton();
         break;
       }
@@ -112,7 +113,35 @@ void loop() {
           break;
       }
       else if(Mode==5){
-          maze2sword2();
+          moveServo(MainArm,MainGrip);
+          delay(500);
+          rspeed=300;
+          lspeed=300;
+          while(true){
+              blineFollowing();
+              if(n==8){
+                  brake();
+                  break;
+              }
+          }
+          drive(-200,-200);
+          countright=0;
+          Int();
+          while(true){
+            if(countright>100){
+              brake();
+              break;
+            }
+          }
+          NoInt();
+          brake();
+          moveServo(Gripper,GripperGrip);
+          delay(1000);
+          moveServo(MainArm,MainNormal);
+          delay(1000);
+          brake();
+
+          turn180();
           break;
 
       }
@@ -142,83 +171,8 @@ void loop() {
           break;
       }
       else if(Mode==9){
-        ColourSum=2;
         moveServo(Gripper,GripperGrip);
-
-        rspeed=500;
-    lspeed=500;
-    while(true){
-        blineFollowing();
-        if(not(digitalRead(SRF))){
-            break;
-        }
-    }
-    drive(500,500);
-    while(true){
-        if(not(digitalRead(SRB))){
-            break;
-        }
-    }
-    correctPos();
-    
-    if(ColourSum==2){
-        turnR();
-        rspeed=500;
-        lspeed=500;
-        while(true){
-            blineFollowing();
-            if(not(digitalRead(SLF))){
-                break;
-            }
-        }
-        drive(500,500);
-        while(true){
-            if(not(digitalRead(SLB))){
-                break;
-            }
-        }
-        correctPos();
-        turnL();
         releaseSwordBox();
-    }
-    else if(ColourSum==3){
-        turnR();
-        rspeed=500;
-        lspeed=500;
-        while(true){
-            blineFollowing();
-            if(not(digitalRead(SLF))){
-                break;
-            }
-        }
-        drive(500,500);
-        while(true){
-            if(not(digitalRead(SLB))){
-                break;
-            }
-        }
-        correctPos();
-        rspeed=500;
-        lspeed=500;
-        while(true){
-            blineFollowing();
-            if(not(digitalRead(SLF))){
-                break;
-            }
-        }
-        drive(500,500);
-        while(true){
-            if(not(digitalRead(SLB))){
-                break;
-            }
-        }
-        correctPos();
-        turnL();
-        releaseSwordBox();
-    }
-    else{
-        releaseSwordBox();
-    }
         break;
 
       }
