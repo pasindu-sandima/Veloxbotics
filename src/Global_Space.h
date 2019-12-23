@@ -3,10 +3,17 @@
 
 Adafruit_PWMServoDriver Servo;
 uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-
+#define GripperNormal 150
+#define GripperGrip 300
+#define MainNormal 170
+#define MainDown  390
+#define MainGrip 435
+#define MainGrip2 390
+#define ColourOpen 170
+#define ColourClose 450
 #define MainArm 13
-#define ColourArm 12
-#define Gripper 7
+#define ColourArm 8
+#define Gripper 14
 
 
 //motor_controlling
@@ -19,6 +26,7 @@ uint16_t ServoCurPos[16] {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 volatile uint16_t countleft=0, countright=0;
 int phasecount=0;
 int lspeed=300; int rspeed=300;
+int lspeedF=400;int rspeedF=400;
 
 
 
@@ -50,6 +58,27 @@ int lspeed=300; int rspeed=300;
 #define SC3 30
 #define sensorOut 26
 
+#define metalDetect 23
+
+
+#define S 0
+#define R 1
+#define B 2
+#define L 3
+int maze_state=0;
+int junctions[30];
+int stackpoint=-1;
+int stackval=0;
+bool MazeEnd = false;
+int Len;
+int shiftstack=0;
+int is_junction = 0; //checks whether a junction is present gets high when one juction sensor is on 
+int temp;
+bool Ltemp,Rtemp;
+
+
+
+
 
 
 
@@ -73,10 +102,16 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 //Line Following
 int n=0; int sum=0;int lineout=0; float error=0; float last_error=0; float adj=0;
 int Kd=115, Kp=15,w1=1, w2=3, w3=8, w4=20, W5=4,w5=2,w6=1; // w5 = error is devided by this and the substracted from rspeed
-int wr = 75,br=34;
+int bKd=40,bKp=15;
+int wr = 75,br=100;
 int Rspeed; int Lspeed;
-int dKd=115, dKp=30;
-
+int dKd=100, dKp=55;
+int linecount=0;
+int l_pwm[50];
+int r_pwm[50];
+int dash_count=0;
+int l_average=0;
+int r_average=0;
 
 volatile bool leftjunction=false,rightjunction=false;
 bool junctionflag =  false;
@@ -105,7 +140,13 @@ unsigned long time=0;
 uint16_t r, g, b, c, colorTemp, lux;
 uint16_t colours[4][3];
 uint16_t Color[4];
+uint16_t ColourOne;
+uint16_t ColourSum=0;
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_700MS, TCS34725_GAIN_1X);
 // Adafruit_TCS34725 tcs = Adafruit_TCS34725();
+
+MPU6050 mpu6050(Wire);
+
+int GyroZ;
 
 #endif

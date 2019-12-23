@@ -3,6 +3,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_TCS34725.h>
+#include <MPU6050_tockn.h>
 #include <Wire.h>
 
 #include "Global_Space.h"
@@ -18,6 +19,8 @@
 #include "functions\LineMaze.h"
 #include "functions\Sword.h"
 #include "functions\task.h"
+#include "functions\Gyro.h"
+
 
 
 
@@ -32,7 +35,7 @@ void setup() {
   RedON();
   GreenON();
   BlueON();
-  Serial.begin(9600);
+  Serial.begin(250000);
   Wire.begin();
   Serial2.begin(115200);
   OLEDsetup();
@@ -42,11 +45,6 @@ void setup() {
   NoInt();
   buzzN(2);
   RedOFF();GreenOFF();BlueOFF();
-
-  
-
-
-  
 }
 
 void loop() {
@@ -81,58 +79,71 @@ void loop() {
   buzzN(5);
 
 
-
+  linecount=0;
   while(digitalRead(button2)){
+    
       if(Mode==1){
-
-        // while(true){
-        //   blineFollowing();
-        //   if(not(digitalRead(SLF))){
-        //     brake();
-        //     break;
-        //   }
-        // }
-        // moveServo(MainArm,420);
-
-        // Servo.setPWM(MainArm,0,420);
-        while(true){
-          blineFollowing();
-          if(n==8){
-            brake();
-            break;
-          }
-        }
-
-        while(true){
-        getColours();
-
-        }
+        roundonetask();
+        break;
       }
       else if(Mode==2){
-          // Servo.setPWM(ColourArm,0,150);
-          Servo.setPWM(ColourArm,0,450);
+        pushb2maze();
+        break;
 
-          break;  
       }
       else if(Mode==3){
-          // Servo.setPWM(ColourArm,0,300);
-          // Servo.setPWM(Gripper,0,120);
-          Servo.setPWM(MainArm,0,430);
-
-          break;
+        maze2releasesword();
+        // pushButton();
+        break;
       }
       else if(Mode==4){
-          dashedlineFollowing();
-          if(n==8){
-            brake();
-            break;
-          }
+          mazeTraverse();
+          // turn180();
+          while(digitalRead(button1)){}
+          buzzN(2);
+          Maze_Optimize();
+          OLEDdisplay(String(junctions[0])+", "+String(junctions[1])+", "+String(junctions[2])+", "+String(junctions[3])+", "+String(junctions[4])+", "+String(junctions[5])+", "+String(junctions[6])+", "+String(junctions[7])+", "+String(junctions[8])+", "+String(junctions[9]));
+          buzzN(2);
+          turn180();
+          while(digitalRead(button1)){}
+          shortPath();
+          brake();
+          while(digitalRead(button1)){}
+          buzzN(2);
+          break;
       }
       else if(Mode==5){
-          wlineFollowing();
-          if(n==0){
-            break;
+          moveServo(MainArm,MainGrip);
+          delay(500);
+          rspeed=300;
+          lspeed=300;
+          while(true){
+              blineFollowing();
+              if(n==8){
+                  brake();
+                  break;
+              }
           }
+          drive(-200,-200);
+          countright=0;
+          Int();
+          while(true){
+            if(countright>100){
+              brake();
+              break;
+            }
+          }
+          NoInt();
+          brake();
+          moveServo(Gripper,GripperGrip);
+          delay(1000);
+          moveServo(MainArm,MainNormal);
+          delay(1000);
+          brake();
+
+          turn180();
+          break;
+
       }
       else if(Mode==6){
           Serial.print(analogRead(S1));
@@ -152,11 +163,18 @@ void loop() {
           Serial.println(analogRead(S8));
       }
       else if(Mode==7){
-          blineFollowing();
-          if(not(digitalRead(SRF)&&digitalRead(SLF))){
-            brake();
-            break;
-          }
+          dashline();
+          break;
+      }
+      else if(Mode==8){
+          pushButton();
+          break;
+      }
+      else if(Mode==9){
+        moveServo(Gripper,GripperGrip);
+        releaseSwordBox();
+        break;
+
       }
       else{
           break;

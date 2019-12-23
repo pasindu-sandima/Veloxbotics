@@ -15,6 +15,16 @@ void OLEDdisplay(String text){
     //delay(100);
 }
 
+void OLEDdisplaySum(String text){
+    display.clearDisplay();
+    display.setTextSize(4); // Draw 2X-scale text
+    display.setTextColor(WHITE);
+    display.setCursor(4, 4);
+    display.println(text);
+    display.display(); // Show initial text
+    //delay(100);
+}
+
 void OLEDprint(int value){
   String text= String(value);
   display.clearDisplay();
